@@ -2,6 +2,8 @@ package com.gustcustodio.to_do_list_api.controllers;
 
 import com.gustcustodio.to_do_list_api.dtos.ItemDTO;
 import com.gustcustodio.to_do_list_api.services.ItemService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,12 @@ public class ItemController {
     public ResponseEntity<ItemDTO> getSingleToDoItem(@PathVariable Long id) {
         ItemDTO itemDTO = itemService.getSingleToDoItem(id);
         return ResponseEntity.ok(itemDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<ItemDTO>> getAllToDoItems(Pageable pageable) {
+        Page<ItemDTO> result = itemService.getAllToDoItems(pageable);
+        return ResponseEntity.ok(result);
     }
 
 }
