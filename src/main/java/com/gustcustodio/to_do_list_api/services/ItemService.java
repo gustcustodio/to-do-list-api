@@ -32,4 +32,10 @@ public class ItemService {
         return items.map(item -> itemMapper.convertEntityToDto(item));
     }
 
+    public ItemDTO createToDoItem(ItemDTO itemDTO) {
+        Item item = itemMapper.convertDtoToEntity(itemDTO);
+        item = itemRepository.save(item);
+        return itemMapper.convertEntityToDto(item);
+    }
+
 }

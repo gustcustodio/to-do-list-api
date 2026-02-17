@@ -5,10 +5,10 @@ import com.gustcustodio.to_do_list_api.services.ItemService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/todos")
@@ -30,6 +30,13 @@ public class ItemController {
     public ResponseEntity<Page<ItemDTO>> getAllToDoItems(Pageable pageable) {
         Page<ItemDTO> result = itemService.getAllToDoItems(pageable);
         return ResponseEntity.ok(result);
+    }
+
+    @PostMapping
+    public ResponseEntity<ItemDTO> createToDoItem(@RequestBody ItemDTO itemDTO) {
+        itemDTO = itemService.createToDoItem(itemDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemDTO.getId()).toUri();
+        return ResponseEntity.created(uri).body(itemDTO);
     }
 
 }
