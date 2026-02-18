@@ -1,0 +1,21 @@
+package com.gustcustodio.to_do_list_api.dtos;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.Instant;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class CustomErrorDTO {
+
+    private Instant timestamp;
+    private Integer status;
+    private String error;
+    private String path;
+
+}
