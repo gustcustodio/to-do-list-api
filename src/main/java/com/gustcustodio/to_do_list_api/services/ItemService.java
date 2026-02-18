@@ -39,4 +39,12 @@ public class ItemService {
         return itemMapper.convertEntityToDto(item);
     }
 
+    @Transactional
+    public ItemDTO updateToDoItem(Long id, ItemDTO itemDTO) {
+        Item item = itemRepository.getReferenceById(id);
+        itemMapper.updateEntityFromDto(itemDTO, item);
+        item = itemRepository.save(item);
+        return itemMapper.convertEntityToDto(item);
+    }
+
 }

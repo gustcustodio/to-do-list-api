@@ -38,5 +38,10 @@ public class ItemController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(itemDTO);
     }
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ItemDTO> updateToDoItem(@PathVariable Long id, @RequestBody ItemDTO itemDTO) {
+        itemDTO = itemService.updateToDoItem(id, itemDTO);
+        return ResponseEntity.ok(itemDTO);
+    }
 
 }
