@@ -7,6 +7,7 @@ import com.gustcustodio.to_do_list_api.repositories.ItemRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -45,6 +46,11 @@ public class ItemService {
         itemMapper.updateEntityFromDto(itemDTO, item);
         item = itemRepository.save(item);
         return itemMapper.convertEntityToDto(item);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void deleteToDoItem(Long id) {
+        itemRepository.deleteById(id);
     }
 
 }
