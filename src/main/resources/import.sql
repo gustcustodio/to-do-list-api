@@ -1,5 +1,5 @@
-INSERT INTO tb_user(name, email, password) VALUES ('Gon Freecss', 'gon@email.com', '123456')
-INSERT INTO tb_user(name, email, password) VALUES ('Killua Zoldyck ', 'kilua@email.com', '123456')
+INSERT INTO tb_user(name, email, password, user_role) VALUES ('Gon Freecss', 'gon@email.com', '$2a$10$2c0F9IslyOAQObYUly6shej01q3vXKmVNxnNr3uqJq9qgxJx5.cMO', 'USER')
+INSERT INTO tb_user(name, email, password, user_role) VALUES ('Killua Zoldyck ', 'kilua@email.com', '$2a$10$2c0F9IslyOAQObYUly6shej01q3vXKmVNxnNr3uqJq9qgxJx5.cMO', 'USER')
 
 INSERT INTO tb_item(title, description, user_id) VALUES ('Buy groceries', 'Buy milk, eggs, and bread', 1)
 INSERT INTO tb_item(title, description, user_id) VALUES ('Pay bills', 'Pay electricity and water bills', 1)
