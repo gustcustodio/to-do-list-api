@@ -3,10 +3,12 @@ package com.gustcustodio.to_do_list_api.controllers.handlers;
 import com.gustcustodio.to_do_list_api.dtos.CustomErrorDTO;
 import com.gustcustodio.to_do_list_api.dtos.ValidationErrorDTO;
 import com.gustcustodio.to_do_list_api.services.exceptions.DatabaseException;
+import com.gustcustodio.to_do_list_api.services.exceptions.ForbiddenException;
 import com.gustcustodio.to_do_list_api.services.exceptions.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -34,11 +36,25 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<CustomErrorDTO> methodArgumentNotValid(MethodArgumentNotValidException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.UNPROCESSABLE_ENTITY;
-        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO(Instant.now(), status.value(), "Dados inválidos", request.getRequestURI());
+        ValidationErrorDTO validationErrorDTO = new ValidationErrorDTO(Instant.now(), status.value(), "Invalid data", request.getRequestURI());
         for (FieldError fieldError : e.getBindingResult().getFieldErrors()) {
             validationErrorDTO.addError(fieldError.getField(), fieldError.getDefaultMessage());
         }
         return ResponseEntity.status(status).body(validationErrorDTO);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<CustomErrorDTO> forbidden(ForbiddenException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.FORBIDDEN;
+        CustomErrorDTO customErrorDTO = new CustomErrorDTO(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(status).body(customErrorDTO);
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<CustomErrorDTO> unauthorized(AuthenticationException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        CustomErrorDTO customErrorDTO = new CustomErrorDTO(Instant.now(), status.value(), "Unauthorized", request.getRequestURI());
+        return ResponseEntity.status(status).body(customErrorDTO);
     }
 
 }
