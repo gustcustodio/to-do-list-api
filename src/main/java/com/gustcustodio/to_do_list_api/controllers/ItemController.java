@@ -4,7 +4,6 @@ import com.gustcustodio.to_do_list_api.dtos.ItemDTO;
 import com.gustcustodio.to_do_list_api.services.ItemService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,8 +35,9 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ItemDTO>> getAllToDoItems(Pageable pageable) {
-        Page<ItemDTO> result = itemService.getAllToDoItems(pageable);
+    public ResponseEntity<Page<ItemDTO>> getAllToDoItems(@RequestParam(value = "page", defaultValue = "0") Integer page,
+                                                         @RequestParam(value = "limit", defaultValue = "5") Integer limit) {
+        Page<ItemDTO> result = itemService.getAllToDoItems(page, limit);
         return ResponseEntity.ok(result);
     }
 
@@ -46,6 +47,7 @@ public class ItemController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(itemDTO.getId()).toUri();
         return ResponseEntity.created(uri).body(itemDTO);
     }
+
     @PutMapping(value = "/{id}")
     public ResponseEntity<ItemDTO> updateToDoItem(@PathVariable Long id, @Valid @RequestBody ItemDTO itemDTO) {
         itemDTO = itemService.updateToDoItem(id, itemDTO);
